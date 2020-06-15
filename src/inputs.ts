@@ -12,6 +12,7 @@ export interface Inputs {
   overwritesPullRequestComment(): boolean
   netlifyConfigPath(): string | undefined
   alias(): string | undefined
+  workflowId(): string | undefined
 }
 
 export const defaultInputs: Inputs = {
@@ -50,5 +51,8 @@ export const defaultInputs: Inputs = {
   },
   alias() {
     return core.getInput('alias') || undefined
+  },
+  workflowId() {
+    return core.getInput('workflowId') || undefined
   }
 }
