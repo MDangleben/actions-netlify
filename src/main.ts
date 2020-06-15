@@ -175,7 +175,7 @@ export async function run(inputs: Inputs): Promise<void> {
 
         try {
           const checks = await githubClient.checks.listForRef({
-            owner: context.sha,
+            owner: context.repo.owner,
             repo: context.repo.repo,
             ref: context.sha
           })
