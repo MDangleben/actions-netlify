@@ -182,6 +182,10 @@ export async function run(inputs: Inputs): Promise<void> {
             })
 
             // eslint-disable-next-line no-console
+            console.log(context)
+            // eslint-disable-next-line no-console
+            console.log(context.repo)
+            // eslint-disable-next-line no-console
             console.log(checks)
 
             // await githubClient.checks.update({
