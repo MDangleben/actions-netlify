@@ -190,13 +190,11 @@ export async function run(inputs: Inputs): Promise<void> {
           )
 
           // eslint-disable-next-line no-console
-          console.log(checks)
-          // eslint-disable-next-line no-console
-          console.log(checks.data)
-          // eslint-disable-next-line no-console
-          console.log(checks.data.check_runs)
+          console.log('currentCheck:', currentCheck)
 
           if (currentCheck) {
+            // eslint-disable-next-line no-console
+            console.log('updating check...')
             await githubClient.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
