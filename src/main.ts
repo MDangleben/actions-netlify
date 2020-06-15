@@ -4,8 +4,6 @@ import NetlifyAPI from 'netlify'
 import * as path from 'path'
 import {defaultInputs, Inputs} from './inputs'
 
-const {GITHUB_RUN_ID, GITHUB_REPOSITORY} = process.env
-
 const getCommentIdentifierString = (
   workflowId?: ReturnType<Inputs['workflowId']>
 ): string =>
@@ -61,8 +59,6 @@ async function createGitHubDeployment(
 
 export async function run(inputs: Inputs): Promise<void> {
   try {
-    // eslint-disable-next-line no-console
-    console.log(GITHUB_RUN_ID, GITHUB_REPOSITORY)
     const netlifyAuthToken = process.env.NETLIFY_AUTH_TOKEN
     const siteId = process.env.NETLIFY_SITE_ID
     // NOTE: Non-collaborators PRs don't pass GitHub secrets to GitHub Actions.
@@ -177,24 +173,24 @@ export async function run(inputs: Inputs): Promise<void> {
           }
         }
 
-        try {
-          // eslint-disable-next-line no-console
-          console.log(GITHUB_REPOSITORY, GITHUB_RUN_ID)
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          const check_run_id = +(GITHUB_RUN_ID || -1)
-          // @ts-ignore
-          const [owner, repo] = GITHUB_REPOSITORY?.split('/')
-          await githubClient.checks.update({
-            owner,
-            repo,
+        if (process.env.GITHUB_RUN_ID && process.env.GITHUB_REPOSITORY) {
+          try {
             // eslint-disable-next-line @typescript-eslint/camelcase
-            check_run_id
-          })
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.log(process.env)
-          // eslint-disable-next-line no-console
-          console.error(error)
+            const check_run_id = +process.env.GITHUB_RUN_ID
+            // @ts-ignore
+            const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
+            await githubClient.checks.update({
+              owner,
+              repo,
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              check_run_id,
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              details_url: 'https://www.google.com/'
+            })
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error)
+          }
         }
 
         try {
