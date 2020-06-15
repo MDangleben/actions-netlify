@@ -195,14 +195,29 @@ export async function run(inputs: Inputs): Promise<void> {
           if (currentCheck) {
             // eslint-disable-next-line no-console
             console.log('updating check...')
-            await githubClient.checks.update({
+            const update = await githubClient.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               // eslint-disable-next-line @typescript-eslint/camelcase
               check_run_id: currentCheck.id,
               // eslint-disable-next-line @typescript-eslint/camelcase
-              details_url: deploy.deploy.deploy_ssl_url
+              details_url: deploy.deploy.deploy_ssl_url,
+              output: {
+                title: 'Deploy preview',
+                summary: deploy.deploy.deploy_ssl_url,
+                images: [
+                  {
+                    alt: 'placeholder',
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    image_url:
+                      'https://assets.aircamera.com/avatars/avatar_red_3.png?h=108&w=108=&fit=crop',
+                    caption: 'air-bird'
+                  }
+                ]
+              }
             })
+            // eslint-disable-next-line no-console
+            console.log(update)
           } else {
             // eslint-disable-next-line no-console
             console.log('Check not found')
