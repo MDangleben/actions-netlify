@@ -177,19 +177,14 @@ export async function run(inputs: Inputs): Promise<void> {
           const checks = await githubClient.checks.listForRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            ref: context.sha
+            ref: context.sha,
+            status: 'in_progress'
           })
 
           // eslint-disable-next-line no-console
           console.log(context)
           // eslint-disable-next-line no-console
           console.log(context.ref)
-          // eslint-disable-next-line no-console
-          console.log(context.sha)
-          // eslint-disable-next-line no-console
-          console.log(process.env.GITHUB_SHA)
-          // eslint-disable-next-line no-console
-          console.log(context.eventName)
           // eslint-disable-next-line no-console
           console.log(checks)
 
