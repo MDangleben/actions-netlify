@@ -175,15 +175,11 @@ export async function run(inputs: Inputs): Promise<void> {
 
         if (process.env.GITHUB_RUN_ID && process.env.GITHUB_REPOSITORY) {
           try {
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            const check_run_id = +process.env.GITHUB_RUN_ID
-            // @ts-ignore
-            const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
             await githubClient.checks.update({
-              owner,
-              repo,
+              owner: process.env.GITHUB_REPOSITORY.split('/')[0],
+              repo: process.env.GITHUB_REPOSITORY.split('/')[1],
               // eslint-disable-next-line @typescript-eslint/camelcase
-              check_run_id,
+              check_run_id: +process.env.GITHUB_RUN_ID,
               // eslint-disable-next-line @typescript-eslint/camelcase
               details_url: 'https://www.google.com/'
             })
