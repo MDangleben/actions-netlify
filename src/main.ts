@@ -189,6 +189,12 @@ export async function run(inputs: Inputs): Promise<void> {
             })
           } catch (error) {
             // eslint-disable-next-line no-console
+            console.log(process.env)
+            // eslint-disable-next-line no-console
+            console.log(process.env.GITHUB_RUN_ID)
+            // eslint-disable-next-line no-console
+            console.log(process.env.GITHUB_REPOSITORY.split('/'))
+            // eslint-disable-next-line no-console
             console.error(error)
           }
         }
