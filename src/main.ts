@@ -173,12 +173,12 @@ export async function run(inputs: Inputs): Promise<void> {
           }
         }
 
-        if (process.env.GITHUB_REPOSITORY && process.env.GITHUB_REF) {
+        if (process.env.GITHUB_REPOSITORY && process.env.GITHUB_SHA) {
           try {
             const checks = await githubClient.checks.listForRef({
               owner: process.env.GITHUB_REPOSITORY.split('/')[0],
               repo: process.env.GITHUB_REPOSITORY.split('/')[1],
-              ref: process.env.GITHUB_REF
+              ref: process.env.GITHUB_SHA
             })
 
             // eslint-disable-next-line no-console
