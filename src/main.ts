@@ -185,6 +185,10 @@ export async function run(inputs: Inputs): Promise<void> {
             status: 'in_progress'
           })
 
+          const currentCheck = checks.data.check_runs.find(
+            check => check.name === workflowId
+          )
+
           // eslint-disable-next-line no-console
           console.log(checks)
           // eslint-disable-next-line no-console
@@ -192,14 +196,19 @@ export async function run(inputs: Inputs): Promise<void> {
           // eslint-disable-next-line no-console
           console.log(checks.data.check_runs)
 
-          // await githubClient.checks.update({
-          //   owner: process.env.GITHUB_REPOSITORY.split('/')[0],
-          //   repo: process.env.GITHUB_REPOSITORY.split('/')[1],
-          //   // eslint-disable-next-line @typescript-eslint/camelcase
-          //   check_run_id: +process.env.GITHUB_RUN_ID,
-          //   // eslint-disable-next-line @typescript-eslint/camelcase
-          //   details_url: 'https://www.google.com/'
-          // })
+          if (currentCheck) {
+            await githubClient.checks.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              check_run_id: currentCheck.id,
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              details_url: deploy.deploy.deploy_ssl_url
+            })
+          } else {
+            // eslint-disable-next-line no-console
+            console.log('Check not found')
+          }
         } catch (error) {
           // eslint-disable-next-line no-console
           console.error(error)
