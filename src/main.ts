@@ -173,33 +173,37 @@ export async function run(inputs: Inputs): Promise<void> {
           }
         }
 
-        if (process.env.GITHUB_REPOSITORY && process.env.GITHUB_SHA) {
-          try {
-            const checks = await githubClient.checks.listForRef({
-              owner: process.env.GITHUB_REPOSITORY.split('/')[0],
-              repo: process.env.GITHUB_REPOSITORY.split('/')[1],
-              ref: process.env.GITHUB_SHA
-            })
+        try {
+          const checks = await githubClient.checks.listForRef({
+            owner: context.sha,
+            repo: context.repo.repo,
+            ref: context.sha
+          })
 
-            // eslint-disable-next-line no-console
-            console.log(context)
-            // eslint-disable-next-line no-console
-            console.log(context.repo)
-            // eslint-disable-next-line no-console
-            console.log(checks)
+          // eslint-disable-next-line no-console
+          console.log(context)
+          // eslint-disable-next-line no-console
+          console.log(context.ref)
+          // eslint-disable-next-line no-console
+          console.log(context.sha)
+          // eslint-disable-next-line no-console
+          console.log(process.env.GITHUB_SHA)
+          // eslint-disable-next-line no-console
+          console.log(context.eventName)
+          // eslint-disable-next-line no-console
+          console.log(checks)
 
-            // await githubClient.checks.update({
-            //   owner: process.env.GITHUB_REPOSITORY.split('/')[0],
-            //   repo: process.env.GITHUB_REPOSITORY.split('/')[1],
-            //   // eslint-disable-next-line @typescript-eslint/camelcase
-            //   check_run_id: +process.env.GITHUB_RUN_ID,
-            //   // eslint-disable-next-line @typescript-eslint/camelcase
-            //   details_url: 'https://www.google.com/'
-            // })
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error(error)
-          }
+          // await githubClient.checks.update({
+          //   owner: process.env.GITHUB_REPOSITORY.split('/')[0],
+          //   repo: process.env.GITHUB_REPOSITORY.split('/')[1],
+          //   // eslint-disable-next-line @typescript-eslint/camelcase
+          //   check_run_id: +process.env.GITHUB_RUN_ID,
+          //   // eslint-disable-next-line @typescript-eslint/camelcase
+          //   details_url: 'https://www.google.com/'
+          // })
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error(error)
         }
 
         try {
