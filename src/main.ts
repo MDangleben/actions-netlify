@@ -192,6 +192,8 @@ export async function run(inputs: Inputs): Promise<void> {
           })
         } catch (error) {
           // eslint-disable-next-line no-console
+          console.log(process.env)
+          // eslint-disable-next-line no-console
           console.error(error)
         }
 
