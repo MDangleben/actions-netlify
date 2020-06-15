@@ -173,23 +173,26 @@ export async function run(inputs: Inputs): Promise<void> {
           }
         }
 
-        if (process.env.GITHUB_RUN_ID && process.env.GITHUB_REPOSITORY) {
+        if (process.env.GITHUB_REPOSITORY && process.env.GITHUB_REF) {
           try {
-            await githubClient.checks.update({
+            const checks = await githubClient.checks.listForRef({
               owner: process.env.GITHUB_REPOSITORY.split('/')[0],
               repo: process.env.GITHUB_REPOSITORY.split('/')[1],
-              // eslint-disable-next-line @typescript-eslint/camelcase
-              check_run_id: +process.env.GITHUB_RUN_ID,
-              // eslint-disable-next-line @typescript-eslint/camelcase
-              details_url: 'https://www.google.com/'
+              ref: process.env.GITHUB_REF
             })
+
+            // eslint-disable-next-line no-console
+            console.log(checks)
+
+            // await githubClient.checks.update({
+            //   owner: process.env.GITHUB_REPOSITORY.split('/')[0],
+            //   repo: process.env.GITHUB_REPOSITORY.split('/')[1],
+            //   // eslint-disable-next-line @typescript-eslint/camelcase
+            //   check_run_id: +process.env.GITHUB_RUN_ID,
+            //   // eslint-disable-next-line @typescript-eslint/camelcase
+            //   details_url: 'https://www.google.com/'
+            // })
           } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(process.env)
-            // eslint-disable-next-line no-console
-            console.log(process.env.GITHUB_RUN_ID)
-            // eslint-disable-next-line no-console
-            console.log(process.env.GITHUB_REPOSITORY.split('/'))
             // eslint-disable-next-line no-console
             console.error(error)
           }
